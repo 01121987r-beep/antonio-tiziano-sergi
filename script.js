@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const rotatingQuotes = [
     {
-      text: "Non si vede bene che col cuore. L'essenziale e invisibile agli occhi.",
+      text: "Non si vede bene che col cuore. L'essenziale è invisibile agli occhi.",
       author: "Antoine de Saint-Exupery"
     },
     {
@@ -27,15 +27,15 @@ document.addEventListener("DOMContentLoaded", () => {
       author: "Carl Gustav Jung"
     },
     {
-      text: "Conoscere se stessi e l'inizio di ogni saggezza.",
+      text: "Conoscere se stessi è l'inizio di ogni saggezza.",
       author: "Aristotele"
     },
     {
-      text: "Non possiamo cambiare nulla finche non lo accettiamo.",
+      text: "Non possiamo cambiare nulla finché non lo accettiamo.",
       author: "Carl Gustav Jung"
     },
     {
-      text: "Ogni uomo porta in se la forma intera della condizione umana.",
+      text: "Ogni uomo porta in sé la forma intera della condizione umana.",
       author: "Michel de Montaigne"
     }
   ];
