@@ -1804,14 +1804,15 @@ body.modal-open {
     overflow: visible;
     padding: 30px;
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: 28px;
+    grid-template-columns: 1fr;
+    gap: 24px;
     align-items: start;
   }
 
   .modal-copy {
     margin-bottom: 0;
     padding-top: 8px;
+    max-width: 78ch;
   }
 
   .modal-copy h2 {
@@ -1826,7 +1827,7 @@ body.modal-open {
 
   .modal-form {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px 16px;
     align-self: stretch;
   }
