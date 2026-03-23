@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const faqButtons = document.querySelectorAll(".faq-question");
   const contactForms = document.querySelectorAll(".contact-form");
   const modalTriggers = document.querySelectorAll("[data-open-modal]");
-  const modal = document.querySelector(".modal");
+  const modals = document.querySelectorAll(".modal");
   const modalCloseButtons = document.querySelectorAll("[data-close-modal]");
   const rotatingQuoteCard = document.querySelector(".portrait-caption");
   const rotatingQuoteText = document.querySelector(".rotating-quote-text");
@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const blogFilterButtons = document.querySelectorAll(".blog-filter-button");
   const blogCards = document.querySelectorAll(".blog-card");
   let lastFocusedElement = null;
+  let activeModal = null;
 
   const rotatingQuotes = [
     {
@@ -69,10 +70,11 @@ document.addEventListener("DOMContentLoaded", () => {
     firstField?.focus();
   };
 
-  const closeModal = () => {
-    if (!modal) return;
-    modal.classList.remove("is-open");
-    modal.setAttribute("aria-hidden", "true");
+  const closeModal = (targetModal = activeModal) => {
+    if (!targetModal) return;
+    targetModal.classList.remove("is-open");
+    targetModal.setAttribute("aria-hidden", "true");
+    activeModal = null;
     document.body.classList.remove("modal-open");
     if (lastFocusedElement instanceof HTMLElement) {
       lastFocusedElement.focus();
@@ -96,11 +98,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const modalId = trigger.getAttribute("data-open-modal");
       if (!modalId) return;
       openModal(modalId, trigger);
+      activeModal = document.getElementById(modalId);
     });
   });
 
   modalCloseButtons.forEach((button) => {
-    button.addEventListener("click", closeModal);
+    button.addEventListener("click", () => {
+      closeModal(button.closest(".modal"));
+    });
   });
 
   document.addEventListener("click", (event) => {
@@ -116,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && modal?.classList.contains("is-open")) {
+    if (event.key === "Escape" && activeModal?.classList.contains("is-open")) {
       closeModal();
     }
   });
