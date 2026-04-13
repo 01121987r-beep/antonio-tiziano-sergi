@@ -58,22 +58,29 @@
     <header class="site-header" id="home">
       <nav class="navbar">
         <a class="brand" href="#home" aria-label="Torna alla home">
-          <img
-            class="brand-logo"
-            src="assets/images/logo.png"
-            alt="Logo Dott. Antonio Tiziano Sergi"
-          />
+          <figure class="brand-figure">
+            <img
+              class="brand-logo"
+              src="assets/images/logo-antonio-tiziano-sergi-analogista.webp"
+              alt="Logo di Antonio Tiziano Sergi analogista esperto nella scienza analogica"
+              loading="eager"
+              decoding="async"
+              aria-describedby="brand-caption-home-en"
+            />
+            <figcaption class="visually-hidden" id="brand-caption-home-en">Antonio Tiziano Sergi analogista specialista nella scienza analogica</figcaption>
+          </figure>
+          <span class="brand-name" aria-hidden="true">Antonio Tiziano Sergi</span>
         </a>
 
-        <div class="nav-actions">
-          <button
-            class="button button-primary nav-cta"
-            type="button"
-            data-open-modal="booking-modal"
-          >
-            Prenota un colloquio
-          </button>
+        <button
+          class="button button-primary nav-cta"
+          type="button"
+          data-open-modal="booking-modal"
+        >
+          Prenota un colloquio
+        </button>
 
+        <div class="nav-actions">
           <button
             class="menu-toggle"
             type="button"
