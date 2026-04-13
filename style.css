@@ -363,7 +363,7 @@ textarea {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   align-items: center;
-  gap: 70px;
+  gap: 56px;
   min-height: 100vh;
   padding-top: 140px;
   padding-bottom: 90px;
@@ -568,6 +568,12 @@ p {
   position: relative;
 }
 
+.hero-visual {
+  width: 100%;
+  max-width: 470px;
+  justify-self: end;
+}
+
 .portrait-card,
 .portrait-secondary {
   position: relative;
@@ -583,10 +589,10 @@ p {
 }
 
 .portrait-card::before {
-  width: 84%;
-  height: 82%;
-  right: -24px;
-  bottom: -26px;
+  width: 82%;
+  height: 80%;
+  right: -18px;
+  bottom: -20px;
   z-index: 0;
 }
 
@@ -601,7 +607,8 @@ p {
 .portrait-placeholder {
   position: relative;
   z-index: 1;
-  min-height: 620px;
+  min-height: 0;
+  aspect-ratio: 2 / 3;
   display: grid;
   place-items: center;
   text-align: center;
@@ -639,6 +646,25 @@ p {
   font-size: 0.9rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.portrait-photo {
+  padding: 0;
+  display: block;
+  margin: 0;
+}
+
+.portrait-photo::before {
+  content: none;
+}
+
+.portrait-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: inherit;
 }
 
 .portrait-caption {
@@ -2048,7 +2074,7 @@ body.modal-open {
   }
 
   .portrait-placeholder {
-    min-height: 430px;
+    height: 430px;
   }
 
   .portrait-caption {
