@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const rotatingQuoteAuthor = document.querySelector(".rotating-quote-author");
   const blogFilterButtons = document.querySelectorAll(".blog-filter-button");
   const blogCards = document.querySelectorAll(".blog-card");
+  const carousels = document.querySelectorAll("[data-carousel]");
   let lastFocusedElement = null;
   let activeModal = null;
 
@@ -178,6 +179,67 @@ document.addEventListener("DOMContentLoaded", () => {
           card.classList.toggle("is-hidden", !shouldShow);
         });
       });
+    });
+  }
+
+  if (carousels.length > 0) {
+    carousels.forEach((carousel) => {
+      const track = carousel.querySelector(".about-carousel-track");
+      const slides = carousel.querySelectorAll(".about-carousel-slide");
+      const prevButton = carousel.querySelector("[data-carousel-prev]");
+      const nextButton = carousel.querySelector("[data-carousel-next]");
+      const dots = carousel.querySelectorAll("[data-carousel-dot]");
+      if (!track || slides.length === 0) return;
+
+      let currentIndex = 0;
+      let autoplayId = null;
+
+      const updateCarousel = () => {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        dots.forEach((dot, dotIndex) => {
+          dot.classList.toggle("is-active", dotIndex === currentIndex);
+        });
+      };
+
+      const goToSlide = (index) => {
+        currentIndex = (index + slides.length) % slides.length;
+        updateCarousel();
+      };
+
+      prevButton?.addEventListener("click", () => {
+        goToSlide(currentIndex - 1);
+      });
+
+      nextButton?.addEventListener("click", () => {
+        goToSlide(currentIndex + 1);
+      });
+
+      dots.forEach((dot) => {
+        dot.addEventListener("click", () => {
+          const dotIndex = Number(dot.getAttribute("data-carousel-dot"));
+          if (Number.isNaN(dotIndex)) return;
+          goToSlide(dotIndex);
+        });
+      });
+
+      const startAutoplay = () => {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        autoplayId = window.setInterval(() => {
+          goToSlide(currentIndex + 1);
+        }, 6200);
+      };
+
+      const stopAutoplay = () => {
+        if (!autoplayId) return;
+        window.clearInterval(autoplayId);
+        autoplayId = null;
+      };
+
+      carousel.addEventListener("mouseenter", stopAutoplay);
+      carousel.addEventListener("mouseleave", startAutoplay);
+
+      updateCarousel();
+      startAutoplay();
     });
   }
 
