@@ -693,7 +693,7 @@
             </div>
           </div>
 
-          <form class="contact-form" data-reveal="up">
+          <form class="contact-form" data-reveal="up" data-mail-form="contatti">
             <label for="nome">Nome</label>
             <input id="nome" name="nome" type="text" placeholder="Il tuo nome" />
 
@@ -751,7 +751,7 @@
           </p>
         </div>
 
-        <form class="contact-form modal-form">
+        <form class="contact-form modal-form" data-mail-form="prenotazione">
           <div class="modal-form-intro">
             <p class="modal-form-kicker">Richiesta riservata</p>
             <p class="modal-form-note">
@@ -798,6 +798,21 @@
               rows="5"
               placeholder="Scrivi brevemente la tua richiesta"
             ></textarea>
+          </div>
+
+          <div class="form-consent">
+            <input
+              id="modal-termini"
+              name="termini"
+              type="checkbox"
+              required
+            />
+            <label for="modal-termini">
+              Dichiaro di aver letto e accettato
+              <button type="button" data-open-modal="privacy-modal">Privacy</button>
+              e
+              <button type="button" data-open-modal="cookie-modal">Cookie</button>.
+            </label>
           </div>
 
           <button class="button button-primary" type="submit">

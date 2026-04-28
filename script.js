@@ -275,12 +275,38 @@ document.addEventListener("DOMContentLoaded", () => {
     feedback.hidden = true;
     form.append(feedback);
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      feedback.textContent =
-        "Messaggio ricevuto. Il modulo è dimostrativo e non invia dati reali senza un backend dedicato.";
-      feedback.hidden = false;
-      form.reset();
+      feedback.hidden = true;
+
+      const submitButton = form.querySelector('button[type="submit"]');
+      if (submitButton) submitButton.disabled = true;
+
+      try {
+        const payload = new FormData(form);
+        payload.append("form_source", form.dataset.mailForm || "contatto");
+
+        const response = await fetch("mail-config.php", {
+          method: "POST",
+          body: payload
+        });
+
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error || "Invio non riuscito");
+        }
+
+        feedback.textContent =
+          "Richiesta inviata correttamente. Sarai ricontattato al più presto.";
+        feedback.hidden = false;
+        form.reset();
+      } catch (error) {
+        feedback.textContent =
+          "Invio non riuscito. Verifica la configurazione email del server e riprova.";
+        feedback.hidden = false;
+      } finally {
+        if (submitButton) submitButton.disabled = false;
+      }
     });
   });
 

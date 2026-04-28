@@ -1464,9 +1464,11 @@ p {
 .modal {
   position: fixed;
   inset: 0;
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   padding: 24px;
+  overflow-y: auto;
   z-index: 200;
   opacity: 0;
   visibility: hidden;
@@ -1488,7 +1490,8 @@ p {
 .modal-panel {
   position: relative;
   width: min(760px, 100%);
-  max-height: min(88vh, 920px);
+  margin: auto 0;
+  max-height: min(94vh, 980px);
   overflow: auto;
   padding: 34px;
   border-radius: 34px;
@@ -1563,6 +1566,49 @@ p {
   color: var(--secondary);
 }
 
+.form-consent {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 2px 0 2px;
+}
+
+.form-consent input[type="checkbox"] {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+  flex: 0 0 auto;
+}
+
+.form-consent label {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--muted);
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-weight: 500;
+}
+
+.form-consent button {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0 2px;
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.form-consent button:hover,
+.form-consent button:focus-visible {
+  color: var(--secondary);
+}
+
 .modal-close {
   position: absolute;
   top: 16px;
@@ -1608,7 +1654,8 @@ p {
 }
 
 body.modal-open {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .contact-form label {
