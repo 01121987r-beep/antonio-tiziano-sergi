@@ -16,21 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 |--------------------------------------------------------------------------
 | Configurazione email
 |--------------------------------------------------------------------------
-| Modalita disponibili:
-| 1) SMTP autenticato (consigliato) con PHPMailer
-| 2) mail() nativo come fallback
+| Inserisci qui i dati reali del cliente.
+| Nota: mail() richiede un server con invio email configurato.
 */
 $recipientEmail = 'info@antoniotizianosergi.it'; // Destinatario richieste
 $fromEmail = 'no-reply@antoniotizianosergi.it';  // Mittente tecnico dominio
 $fromName = 'Sito Antonio Tiziano Sergi';
-
-// SMTP (compila con i dati reali cliente)
-$useSmtp = true;
-$smtpHost = 'smtp.tuodominio.it';
-$smtpPort = 587; // es. 465 SSL, 587 TLS
-$smtpUsername = 'info@antoniotizianosergi.it';
-$smtpPassword = 'INSERISCI_PASSWORD_SMTP';
-$smtpSecure = 'tls'; // 'tls' oppure 'ssl'
 
 /*
 |--------------------------------------------------------------------------
@@ -96,71 +87,20 @@ $bodyLines = [
 ];
 $body = implode("\n", $bodyLines);
 
-// Tentativo invio SMTP con PHPMailer (se disponibile)
-$sent = false;
-$smtpError = '';
+$headers = [
+    'From: ' . $fromName . ' <' . $fromEmail . '>',
+    'Reply-To: ' . $safeNome . ' <' . $email . '>',
+    'MIME-Version: 1.0',
+    'Content-Type: text/plain; charset=UTF-8'
+];
 
-if ($useSmtp) {
-    $autoloadPaths = [
-        __DIR__ . '/vendor/autoload.php',
-        __DIR__ . '/phpmailer/vendor/autoload.php'
-    ];
-
-    foreach ($autoloadPaths as $autoloadPath) {
-        if (file_exists($autoloadPath)) {
-            require_once $autoloadPath;
-            break;
-        }
-    }
-
-    if (class_exists(\PHPMailer\PHPMailer\PHPMailer::class)) {
-        try {
-            $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
-            $mail->isSMTP();
-            $mail->Host = $smtpHost;
-            $mail->SMTPAuth = true;
-            $mail->Username = $smtpUsername;
-            $mail->Password = $smtpPassword;
-            $mail->SMTPSecure = $smtpSecure;
-            $mail->Port = $smtpPort;
-            $mail->CharSet = 'UTF-8';
-
-            $mail->setFrom($fromEmail, $fromName);
-            $mail->addAddress($recipientEmail);
-            $mail->addReplyTo($email, $safeNome);
-
-            $mail->Subject = $subject;
-            $mail->Body = $body;
-            $mail->isHTML(false);
-
-            $sent = $mail->send();
-        } catch (\Throwable $e) {
-            $smtpError = $e->getMessage();
-        }
-    } else {
-        $smtpError = 'PHPMailer non trovato. Installa la libreria o usa fallback mail().';
-    }
-}
-
-// Fallback: invio con mail() nativo
-if (!$sent && !$useSmtp) {
-    $headers = [
-        'From: ' . $fromName . ' <' . $fromEmail . '>',
-        'Reply-To: ' . $safeNome . ' <' . $email . '>',
-        'MIME-Version: 1.0',
-        'Content-Type: text/plain; charset=UTF-8'
-    ];
-    $sent = mail($recipientEmail, $subject, $body, implode("\r\n", $headers));
-}
+$sent = mail($recipientEmail, $subject, $body, implode("\r\n", $headers));
 
 if (!$sent) {
     http_response_code(500);
     echo json_encode([
         'ok' => false,
-        'error' => $useSmtp
-            ? 'Invio SMTP fallito. Verifica host/porta/username/password e PHPMailer.'
-            : 'Invio email fallito. Verifica configurazione server.',
-        'debug' => $smtpError
+        'error' => 'Invio email fallito. Verifica configurazione server.'
     ]);
     exit;
 }
@@ -169,3 +109,4 @@ echo json_encode([
     'ok' => true,
     'message' => 'Richiesta inviata con successo'
 ]);
+
