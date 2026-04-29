@@ -2517,6 +2517,10 @@ body.modal-open {
 }
 
 @media (max-width: 860px) {
+  :root {
+    --container: min(430px, calc(100% - 44px));
+  }
+
   * {
     min-width: 0;
   }
@@ -2542,18 +2546,18 @@ body.modal-open {
 
   .section,
   .site-footer {
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   .section-toned::before {
-    inset: 14px 0;
+    inset: 14px 10px;
     border-radius: 26px;
   }
 
   .navbar {
-    width: min(430px, calc(100% - 22px));
-    max-width: calc(100% - 22px);
+    width: min(430px, calc(100% - 40px));
+    max-width: calc(100% - 40px);
     padding: 10px 12px;
     border-radius: 28px;
     align-items: center;
@@ -2614,11 +2618,6 @@ body.modal-open {
     padding: 0 16px;
     font-size: 0.84rem;
     margin-right: 0;
-  }
-
-  .language-switch {
-    margin-left: 10px;
-    padding-left: 12px;
   }
 
   .nav-menu.is-open {
@@ -2708,11 +2707,11 @@ body.modal-open {
   }
 
   .cookie-banner {
-    width: min(430px, calc(100% - 22px));
-    max-width: calc(100% - 22px);
+    width: min(430px, calc(100% - 40px));
+    max-width: calc(100% - 40px);
     left: 50%;
     right: auto;
-    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(88px + env(safe-area-inset-bottom, 0px));
     transform: translateX(-50%);
     border-radius: 14px;
     padding: 14px;
@@ -2722,11 +2721,33 @@ body.modal-open {
   .cookie-banner.is-visible {
     transform: translateX(-50%);
   }
+
+  .timeline-benefits .timeline-step {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    column-gap: 14px;
+    align-items: start;
+    padding-left: 0 !important;
+  }
+
+  .timeline-benefits .timeline-step .step-number {
+    position: static;
+    margin: 0;
+    width: 52px;
+    height: 52px;
+    font-size: 1.14rem;
+  }
+
+  .timeline-benefits .timeline-step h3 {
+    margin: 0;
+    font-size: 1.08rem;
+    line-height: 1.4;
+  }
 }
 
 @media (max-width: 640px) {
   :root {
-    --container: min(430px, calc(100% - 22px));
+    --container: min(430px, calc(100% - 64px));
   }
 
   .site-header {
@@ -2744,7 +2765,7 @@ body.modal-open {
 
   .navbar {
     top: max(8px, env(safe-area-inset-top, 0px));
-    width: min(430px, calc(100% - 22px));
+    width: min(430px, calc(100% - 64px));
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -2779,12 +2800,25 @@ body.modal-open {
     width: 100%;
   }
 
+  .timeline-step {
+    padding-left: 0;
+  }
+
   h1 {
     font-size: clamp(2.8rem, 14vw, 4.1rem);
   }
 
   h2 {
     font-size: clamp(1.95rem, 10vw, 2.8rem);
+  }
+
+  .about-heading h2 {
+    font-size: clamp(1.9rem, 8.2vw, 2.35rem);
+    line-height: 1.18;
+  }
+
+  .signature-inline img {
+    width: clamp(84px, 25vw, 124px);
   }
 
   .portrait-placeholder {
@@ -2901,7 +2935,8 @@ body.modal-open {
   }
 
   .step-number {
-    width: 56px;
-    height: 56px;
+    width: 50px;
+    height: 50px;
+    font-size: 1.16rem;
   }
 }
