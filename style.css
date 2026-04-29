@@ -196,7 +196,7 @@ textarea {
   gap: 10px;
   min-width: 0;
   width: auto;
-  height: 54px;
+  height: 58px;
   flex-shrink: 0;
   overflow: visible;
   margin-left: 8px;
@@ -205,7 +205,7 @@ textarea {
 .brand-logo {
   display: block;
   width: auto;
-  height: 54px;
+  height: 58px;
   object-fit: contain;
   transform: scale(1);
   transform-origin: left center;
@@ -2512,7 +2512,7 @@ body.modal-open {
 
 @media (max-width: 860px) {
   .navbar {
-    width: min(430px, calc(100% - 16px));
+    width: clamp(340px, calc(100% - 16px), 430px);
     max-width: calc(100% - 16px);
     padding: 10px 12px;
     border-radius: 28px;
@@ -2529,8 +2529,9 @@ body.modal-open {
   .nav-menu {
     position: absolute;
     top: calc(100% + 10px);
-    left: 0;
+    left: auto;
     right: 0;
+    width: min(320px, calc(100vw - 24px));
     display: grid;
     gap: 8px;
     padding: 14px;
@@ -2554,6 +2555,7 @@ body.modal-open {
     gap: 8px;
     flex: initial;
     margin-left: auto;
+    min-width: 0;
   }
 
   .nav-cta {
@@ -2592,13 +2594,13 @@ body.modal-open {
 
   .brand {
     width: auto;
-    height: 38px;
+    height: 42px;
     margin-left: 0;
     gap: 8px;
   }
 
   .brand-logo {
-    height: 38px;
+    height: 42px;
     transform: scale(1);
   }
 
@@ -2613,17 +2615,19 @@ body.modal-open {
   }
 
   .cookie-banner {
-    width: calc(100% - 20px);
-    left: 10px;
-    right: 10px;
-    bottom: 12px;
-    transform: none;
+    width: clamp(340px, calc(100% - 16px), 430px);
+    max-width: calc(100% - 16px);
+    left: 50%;
+    right: auto;
+    bottom: max(8px, env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
     border-radius: 14px;
     padding: 14px;
+    z-index: 320;
   }
 
   .cookie-banner.is-visible {
-    transform: none;
+    transform: translateX(-50%);
   }
 }
 
@@ -2647,7 +2651,7 @@ body.modal-open {
 
   .navbar {
     top: max(8px, env(safe-area-inset-top, 0px));
-    width: min(430px, calc(100% - 16px));
+    width: clamp(340px, calc(100% - 16px), 430px);
     padding-left: 10px;
     padding-right: 10px;
   }
