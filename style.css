@@ -44,6 +44,12 @@ body {
   overflow-wrap: break-word;
 }
 
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body::before,
 body::after {
   content: "";
@@ -2511,9 +2517,43 @@ body.modal-open {
 }
 
 @media (max-width: 860px) {
+  * {
+    min-width: 0;
+  }
+
+  .section,
+  .site-footer,
+  .hero,
+  .about-layout,
+  .contact-layout,
+  .about-visual,
+  .about-copy,
+  .about-copy-secondary,
+  .about-details,
+  .pillar-grid,
+  .service-grid,
+  .timeline,
+  .faq-list,
+  .contact-form,
+  .modal-panel {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .section,
+  .site-footer {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+
+  .section-toned::before {
+    inset: 14px 0;
+    border-radius: 26px;
+  }
+
   .navbar {
-    width: clamp(340px, calc(100% - 16px), 430px);
-    max-width: calc(100% - 16px);
+    width: min(430px, calc(100% - 22px));
+    max-width: calc(100% - 22px);
     padding: 10px 12px;
     border-radius: 28px;
     align-items: center;
@@ -2531,7 +2571,7 @@ body.modal-open {
     top: calc(100% + 10px);
     left: auto;
     right: 0;
-    width: min(320px, calc(100vw - 24px));
+    width: min(320px, calc(100vw - 20px));
     display: grid;
     gap: 8px;
     padding: 14px;
@@ -2556,6 +2596,17 @@ body.modal-open {
     flex: initial;
     margin-left: auto;
     min-width: 0;
+  }
+
+  .language-switch {
+    margin-left: 6px;
+    padding-left: 8px;
+    gap: 6px;
+  }
+
+  .language-switch a {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
   }
 
   .nav-cta {
@@ -2608,6 +2659,48 @@ body.modal-open {
     font-size: 0.86rem;
   }
 
+  .hero-visual,
+  .about-visual {
+    justify-self: stretch;
+  }
+
+  .portrait-card::before,
+  .about-visual::after {
+    display: none;
+  }
+
+  .portrait-caption {
+    position: static;
+    left: auto;
+    bottom: auto;
+    max-width: 100%;
+    margin-top: 12px;
+  }
+
+  .about-carousel,
+  .portrait-placeholder,
+  .about-carousel-slide,
+  .about-carousel-slide img,
+  .about-details article,
+  .pillar-card,
+  .service-card,
+  .service-face,
+  .faq-item,
+  .meeting-card,
+  .cta-card,
+  .contact-form {
+    max-width: 100%;
+  }
+
+  .about-carousel {
+    overflow: hidden;
+  }
+
+  .about-carousel-slide figcaption {
+    width: 100%;
+    word-break: break-word;
+  }
+
   .nav-menu a {
     min-height: 44px;
     display: inline-flex;
@@ -2615,11 +2708,11 @@ body.modal-open {
   }
 
   .cookie-banner {
-    width: clamp(340px, calc(100% - 16px), 430px);
-    max-width: calc(100% - 16px);
+    width: min(430px, calc(100% - 22px));
+    max-width: calc(100% - 22px);
     left: 50%;
     right: auto;
-    bottom: max(8px, env(safe-area-inset-bottom, 0px));
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
     transform: translateX(-50%);
     border-radius: 14px;
     padding: 14px;
@@ -2633,7 +2726,7 @@ body.modal-open {
 
 @media (max-width: 640px) {
   :root {
-    --container: min(430px, calc(100% - 16px));
+    --container: min(430px, calc(100% - 22px));
   }
 
   .site-header {
@@ -2651,7 +2744,7 @@ body.modal-open {
 
   .navbar {
     top: max(8px, env(safe-area-inset-top, 0px));
-    width: clamp(340px, calc(100% - 16px), 430px);
+    width: min(430px, calc(100% - 22px));
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -2666,15 +2759,15 @@ body.modal-open {
 
   .language-switch {
     display: inline-flex;
-    margin-left: 6px;
-    padding-left: 8px;
-    gap: 6px;
-    border-left: 1px solid rgba(33, 78, 88, 0.14);
+    margin-left: 4px;
+    padding-left: 6px;
+    gap: 5px;
+    border-left: 0;
   }
 
   .language-switch a {
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
   }
 
   .brand-name {
@@ -2696,12 +2789,6 @@ body.modal-open {
 
   .portrait-placeholder {
     height: 430px;
-  }
-
-  .portrait-caption {
-    position: static;
-    max-width: none;
-    margin-top: 16px;
   }
 
   .about-carousel-slide {
