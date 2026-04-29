@@ -43,7 +43,7 @@
           type="button"
           data-open-modal="booking-modal"
         >
-          Prenota un colloquio
+          Richiedi un colloquio
         </button>
 
         <div class="nav-actions">
@@ -234,7 +234,7 @@
         </button>
 
         <div class="modal-copy">
-          <p class="eyebrow">Prenota un colloquio</p>
+          <p class="eyebrow">Richiedi un colloquio</p>
           <h2 id="booking-modal-title">Richiedi un primo contatto riservato</h2>
           <p>
             Compila il modulo per essere ricontattato e concordare un primo
@@ -243,14 +243,7 @@
           </p>
         </div>
 
-        <form class="contact-form modal-form">
-          <div class="modal-form-intro">
-            <p class="modal-form-kicker">Richiesta riservata</p>
-            <p class="modal-form-note">
-              Inserisci i tuoi riferimenti e una breve descrizione della
-              richiesta. Sarai ricontattato con discrezione.
-            </p>
-          </div>
+        <form class="contact-form modal-form" data-mail-form="prenotazione">
 
           <div class="form-field">
             <label for="modal-nome">Nome e cognome</label>
@@ -292,8 +285,23 @@
             ></textarea>
           </div>
 
+          <div class="form-consent">
+            <input
+              id="modal-termini"
+              name="termini"
+              type="checkbox"
+              required
+            />
+            <label for="modal-termini">
+              Dichiaro di aver letto e accettato
+              <button type="button" data-open-modal="privacy-modal">Privacy</button>
+              e
+              <button type="button" data-open-modal="cookie-modal">Cookie</button>.
+            </label>
+          </div>
+
           <button class="button button-primary" type="submit">
-            Invia richiesta
+            Richiedi un colloquio
           </button>
         </form>
       </div>

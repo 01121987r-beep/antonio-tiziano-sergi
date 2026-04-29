@@ -823,6 +823,27 @@ p {
   margin: 0;
 }
 
+.signature-inline {
+  display: inline-flex;
+  align-items: baseline;
+  margin-left: 10px;
+  margin-block: 0;
+}
+
+.signature-inline img {
+  width: clamp(108px, 11.5vw, 164px);
+  height: auto;
+  vertical-align: baseline;
+}
+
+.about-heading-content p {
+  margin-top: 16px;
+  max-width: 95ch;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
 .about-layout,
 .contact-layout {
   display: grid;
@@ -972,6 +993,19 @@ p {
 .about-visual {
   width: min(760px, 100%);
   margin: 0 auto;
+}
+
+.about-visual::after {
+  display: none;
+}
+
+.about-section-note {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.72;
+  width: 100%;
+  max-width: 100%;
 }
 
 .about-more {
@@ -1661,21 +1695,23 @@ p {
 
 .form-consent {
   grid-column: 1 / -1;
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  align-items: center;
   gap: 10px;
   margin: 2px 0 2px;
 }
 
 .form-consent input[type="checkbox"] {
-  margin-top: 2px;
+  margin-top: 0;
   width: 16px;
   height: 16px;
   accent-color: var(--primary);
-  flex: 0 0 auto;
+  display: block;
 }
 
 .form-consent label {
+  display: block;
   margin: 0;
   font-size: 0.9rem;
   line-height: 1.45;
