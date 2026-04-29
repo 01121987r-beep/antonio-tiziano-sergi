@@ -2512,10 +2512,12 @@ body.modal-open {
 
 @media (max-width: 860px) {
   .navbar {
-    width: min(100% - 20px, 1000px);
+    width: min(430px, calc(100% - 16px));
+    max-width: calc(100% - 16px);
     padding: 10px 12px;
     border-radius: 28px;
     align-items: center;
+    justify-content: space-between;
   }
 
   .menu-toggle {
@@ -2549,7 +2551,7 @@ body.modal-open {
   .nav-actions {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     flex: initial;
     margin-left: auto;
   }
@@ -2627,7 +2629,7 @@ body.modal-open {
 
 @media (max-width: 640px) {
   :root {
-    --container: min(100% - 28px, 1180px);
+    --container: min(430px, calc(100% - 16px));
   }
 
   .site-header {
@@ -2645,7 +2647,7 @@ body.modal-open {
 
   .navbar {
     top: max(8px, env(safe-area-inset-top, 0px));
-    width: calc(100% - 16px);
+    width: min(430px, calc(100% - 16px));
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -2659,7 +2661,16 @@ body.modal-open {
   }
 
   .language-switch {
-    display: none;
+    display: inline-flex;
+    margin-left: 6px;
+    padding-left: 8px;
+    gap: 6px;
+    border-left: 1px solid rgba(33, 78, 88, 0.14);
+  }
+
+  .language-switch a {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
   }
 
   .brand-name {
