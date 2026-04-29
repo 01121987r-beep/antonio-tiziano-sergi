@@ -16,6 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const blogFilterButtons = document.querySelectorAll(".blog-filter-button");
   const blogCards = document.querySelectorAll(".blog-card");
   const carousels = document.querySelectorAll("[data-carousel]");
+  const cookieBanner = document.getElementById("cookie-consent-banner");
+  const cookieActionButtons = document.querySelectorAll("[data-cookie-action]");
+  const cookieSettingsForms = document.querySelectorAll(
+    "[data-cookie-settings-form]"
+  );
+  const COOKIE_CONSENT_KEY = "ats_cookie_consent_v1";
   let lastFocusedElement = null;
   let activeModal = null;
 
@@ -160,11 +166,32 @@ document.addEventListener("DOMContentLoaded", () => {
       { text: "Ни один лист не падает без воли бессознательного.", author: "Аналогические дисциплины" },
       { text: "Логика утверждает то, что бессознательное отрицает, и наоборот.", author: "Аналогические дисциплины" },
       { text: "Если верен прямой путь, верен и обратный.", author: "Аналогические дисциплины" },
+      { text: "Если не удаётся зацепиться через прямой путь, это происходит через обратный.", author: "Аналогические дисциплины" },
+      { text: "То, что для логики является целью, для бессознательного становится инструментом.", author: "Аналогические дисциплины" },
+      { text: "Границы специалиста — это его собственные внутренние потребности.", author: "Аналогические дисциплины" },
+      { text: "Кто говорит — не делает, кто делает — не говорит.", author: "Аналогические дисциплины" },
+      { text: "Кто поощряет — будет наказан, а кто наказывает — будет поощрён.", author: "Аналогические дисциплины" },
+      { text: "Кто просит — проигрывает, кто умеет получить — выигрывает.", author: "Аналогические дисциплины" },
       { text: "Для бессознательного истинно то, что вовлекает.", author: "Аналогические дисциплины" },
+      { text: "Смоделировать игру через воображение.", author: "Аналогические дисциплины" },
+      { text: "Кто скребёт — не рискует, а кто рискует — не скребёт.", author: "Аналогические дисциплины" },
+      { text: "Прошлое отражается в будущем.", author: "Аналогические дисциплины" },
+      { text: "Для бессознательного свадьба и похороны — одно и то же.", author: "Аналогические дисциплины" },
       { text: "За каждым симптомом стоит человек.", author: "Аналогические дисциплины" },
+      { text: "Страдание — идеальный образ удовольствия.", author: "Аналогические дисциплины" },
+      { text: "Страдание прямо пропорционально отсутствию удовольствия.", author: "Аналогические дисциплины" },
       { text: "Ты не болен, ты просто несчастлив.", author: "Аналогические дисциплины" },
+      { text: "Быть счастливым — значит следовать своим мечтам в полной свободе и в согласии с совестью.", author: "Аналогические дисциплины" },
+      { text: "Трудности прямо пропорциональны степени внутреннего дефекта в самом себе.", author: "Аналогические дисциплины" },
+      { text: "Если не можешь укусить руку «Дон Калоджеро», лучше поцелуй её — всё равно перехитришь.", author: "Аналогические дисциплины" },
+      { text: "Кто терпит меч, тот и наносит удар мечом.", author: "Аналогические дисциплины" },
+      { text: "Когда змея стареет, лягушка её обыгрывает.", author: "Аналогические дисциплины" },
       { text: "Будь режиссёром своей жизни.", author: "Аналогические дисциплины" },
+      { text: "Дистония бытия усложняет лёгкое через бесполезное.", author: "Аналогические дисциплины" },
+      { text: "Дистония обладания упрощает трудное через полезное.", author: "Аналогические дисциплины" },
+      { text: "Прямой и обратный путь в противостоянии порождают конфликт; конфликт рождает тревогу, тревога — проблему, а проблема — симптом.", author: "Аналогические дисциплины" },
       { text: "Реальность неизбежна, интерпретация субъективна.", author: "Аналогические дисциплины" },
+      { text: "Власть самореферентна.", author: "Аналогические дисциплины" },
       { text: "Если сомнение убивает, тайна порабощает.", author: "Аналогические дисциплины" }
     ];
   }
@@ -172,6 +199,68 @@ document.addEventListener("DOMContentLoaded", () => {
   const updateNavbar = () => {
     if (!navbar) return;
     navbar.classList.toggle("is-scrolled", window.scrollY > 36);
+  };
+
+  const parseStoredConsent = () => {
+    try {
+      const raw = window.localStorage.getItem(COOKIE_CONSENT_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (
+        typeof parsed !== "object" ||
+        parsed === null ||
+        typeof parsed.analytics !== "boolean" ||
+        typeof parsed.marketing !== "boolean"
+      ) {
+        return null;
+      }
+      return parsed;
+    } catch {
+      return null;
+    }
+  };
+
+  const applyCookieConsent = (consent) => {
+    document.documentElement.dataset.cookieAnalytics = consent.analytics
+      ? "granted"
+      : "denied";
+    document.documentElement.dataset.cookieMarketing = consent.marketing
+      ? "granted"
+      : "denied";
+  };
+
+  const persistCookieConsent = (consent) => {
+    const payload = {
+      ...consent,
+      timestamp: new Date().toISOString()
+    };
+    window.localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify(payload));
+    applyCookieConsent(consent);
+  };
+
+  const syncCookieSettingsUI = (consent) => {
+    cookieSettingsForms.forEach((form) => {
+      const analytics = form.querySelector('[data-cookie-toggle="analytics"]');
+      const marketing = form.querySelector('[data-cookie-toggle="marketing"]');
+      if (analytics instanceof HTMLInputElement) {
+        analytics.checked = consent.analytics;
+      }
+      if (marketing instanceof HTMLInputElement) {
+        marketing.checked = consent.marketing;
+      }
+    });
+  };
+
+  const showCookieBanner = () => {
+    if (!cookieBanner) return;
+    cookieBanner.classList.add("is-visible");
+    cookieBanner.setAttribute("aria-hidden", "false");
+  };
+
+  const hideCookieBanner = () => {
+    if (!cookieBanner) return;
+    cookieBanner.classList.remove("is-visible");
+    cookieBanner.setAttribute("aria-hidden", "true");
   };
 
   const closeMenu = () => {
@@ -209,6 +298,53 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const handleCookieAction = (action, trigger) => {
+    if (!action) return;
+    if (action === "open-settings") {
+      openModal("cookie-modal", trigger);
+      activeModal = document.getElementById("cookie-modal");
+      return;
+    }
+
+    if (action === "accept-all") {
+      const consent = { analytics: true, marketing: true };
+      persistCookieConsent(consent);
+      syncCookieSettingsUI(consent);
+      hideCookieBanner();
+      if (activeModal?.id === "cookie-modal") closeModal(activeModal);
+      return;
+    }
+
+    if (action === "reject-optional") {
+      const consent = { analytics: false, marketing: false };
+      persistCookieConsent(consent);
+      syncCookieSettingsUI(consent);
+      hideCookieBanner();
+      if (activeModal?.id === "cookie-modal") closeModal(activeModal);
+      return;
+    }
+
+    if (action === "save-settings") {
+      const form =
+        trigger?.closest("[data-cookie-settings-form]") ||
+        cookieSettingsForms[0] ||
+        null;
+      if (!form) return;
+      const analytics = form.querySelector('[data-cookie-toggle="analytics"]');
+      const marketing = form.querySelector('[data-cookie-toggle="marketing"]');
+      const consent = {
+        analytics:
+          analytics instanceof HTMLInputElement ? analytics.checked : false,
+        marketing:
+          marketing instanceof HTMLInputElement ? marketing.checked : false
+      };
+      persistCookieConsent(consent);
+      syncCookieSettingsUI(consent);
+      hideCookieBanner();
+      if (activeModal?.id === "cookie-modal") closeModal(activeModal);
+    }
+  };
+
   if (menuToggle) {
     menuToggle.addEventListener("click", toggleMenu);
   }
@@ -233,6 +369,13 @@ document.addEventListener("DOMContentLoaded", () => {
   modalCloseButtons.forEach((button) => {
     button.addEventListener("click", () => {
       closeModal(button.closest(".modal"));
+    });
+  });
+
+  cookieActionButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const action = button.getAttribute("data-cookie-action");
+      handleCookieAction(action, button);
     });
   });
 
@@ -448,6 +591,18 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  const initialConsent = parseStoredConsent();
+  if (initialConsent) {
+    applyCookieConsent(initialConsent);
+    syncCookieSettingsUI(initialConsent);
+    hideCookieBanner();
+  } else {
+    const defaultConsent = { analytics: false, marketing: false };
+    applyCookieConsent(defaultConsent);
+    syncCookieSettingsUI(defaultConsent);
+    showCookieBanner();
+  }
 
   updateNavbar();
   window.addEventListener("scroll", updateNavbar, { passive: true });
