@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let lastFocusedElement = null;
   let activeModal = null;
 
-  const rotatingQuotes = [
+  let rotatingQuotes = [
     {
       text: "Non cade foglia che l'inconscio non voglia",
       author: "Scienza Analogica"
@@ -141,6 +141,33 @@ document.addEventListener("DOMContentLoaded", () => {
       author: "Scienza Analogica"
     }
   ];
+
+  const pageLang = document.documentElement.lang || "it";
+  if (pageLang === "en") {
+    rotatingQuotes = [
+      { text: "Not a leaf falls unless the unconscious allows it.", author: "Analogical Sciences" },
+      { text: "Logic affirms what the unconscious denies, and vice versa.", author: "Analogical Sciences" },
+      { text: "If the direct path is true, the inverse path is also true.", author: "Analogical Sciences" },
+      { text: "For the unconscious, what engages is what is true.", author: "Analogical Sciences" },
+      { text: "Behind every symptom there is a person.", author: "Analogical Sciences" },
+      { text: "You are not ill, you are simply unhappy.", author: "Analogical Sciences" },
+      { text: "Be the director of your own life.", author: "Analogical Sciences" },
+      { text: "Reality is inescapable; interpretation is subjective.", author: "Analogical Sciences" },
+      { text: "If doubt kills, secrecy enslaves.", author: "Analogical Sciences" }
+    ];
+  } else if (pageLang === "ru") {
+    rotatingQuotes = [
+      { text: "Ни один лист не падает без воли бессознательного.", author: "Аналогические дисциплины" },
+      { text: "Логика утверждает то, что бессознательное отрицает, и наоборот.", author: "Аналогические дисциплины" },
+      { text: "Если верен прямой путь, верен и обратный.", author: "Аналогические дисциплины" },
+      { text: "Для бессознательного истинно то, что вовлекает.", author: "Аналогические дисциплины" },
+      { text: "За каждым симптомом стоит человек.", author: "Аналогические дисциплины" },
+      { text: "Ты не болен, ты просто несчастлив.", author: "Аналогические дисциплины" },
+      { text: "Будь режиссёром своей жизни.", author: "Аналогические дисциплины" },
+      { text: "Реальность неизбежна, интерпретация субъективна.", author: "Аналогические дисциплины" },
+      { text: "Если сомнение убивает, тайна порабощает.", author: "Аналогические дисциплины" }
+    ];
+  }
 
   const updateNavbar = () => {
     if (!navbar) return;
