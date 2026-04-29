@@ -21,24 +21,124 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const rotatingQuotes = [
     {
-      text: "Non si vede bene che col cuore. L'essenziale è invisibile agli occhi.",
-      author: "Antoine de Saint-Exupery"
+      text: "Non cade foglia che l'inconscio non voglia",
+      author: "Scienza Analogica"
     },
     {
-      text: "Chi guarda fuori sogna, chi guarda dentro si sveglia.",
-      author: "Carl Gustav Jung"
+      text: "La logica afferma ciò che l'inconscio nega e viceversa",
+      author: "Scienza Analogica"
     },
     {
-      text: "Conoscere se stessi è l'inizio di ogni saggezza.",
-      author: "Aristotele"
+      text: "Se è vero il verso è anche vero l'inverso",
+      author: "Scienza Analogica"
     },
     {
-      text: "Non possiamo cambiare nulla finché non lo accettiamo.",
-      author: "Carl Gustav Jung"
+      text: "Se non ti agganci con il verso ti agganci con l'inverso",
+      author: "Scienza Analogica"
     },
     {
-      text: "Ogni uomo porta in sé la forma intera della condizione umana.",
-      author: "Michel de Montaigne"
+      text: "Ciò che è obiettivo della logica è strumento per l'inconscio",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "I limiti dell'operatore sono le proprie esigenze",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Chi dice non fa e chi fa non dice",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Chi gratifica sarà penalizzato e chi penalizza sarà gratificato",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Chi chiede è perdente e chi sa ottenere è vincente",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Per l'inconscio è vero ciò che coinvolge",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Simulare il gioco attraverso la fantasia",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Chi raschia non rischia e chi rischia non raschia",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Il passato si riflette sul futuro",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Per l'inconscio un matrimonio o un funerale è lo stesso",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Dietro ogni sintomo c'è l'uomo",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "La sofferenza è l'immagine ideale del piacere",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "La sofferenza è direttamente proporzionale all'assenza del piacere",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Non sei malato, sei solo infelice",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Essere felici vuol dire perseguire i propri sogni in piena libertà e in pace con la propria coscienza",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Le difficoltà sono direttamente proporzionali al grado di difetto presente in se stessi",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Se non puoi mordere la mano a Don Calogero è bene che la baci tanto lo freghi lo stesso",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Chi di spada subisce di spada colpisce",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Quando il serpente s'invecchia la rana se lo incula",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Sii regista della tua vita",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Il distonico dell'essere rende difficile il facile attraverso l'inutile",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Il distonico dell'avere rende facile il difficile attraverso l'utile",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Il verso e l'inverso, in contrapposizione, generano il conflitto, il conflitto genera il turbamento e il turbamento il problema; il problema genera il sintomo",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "La realtà è ineluttabile, l'interpretazione è soggettiva.",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Il potere è autoreferenziale.",
+      author: "Scienza Analogica"
+    },
+    {
+      text: "Se il dubbio uccide, il segreto rende schiavi.",
+      author: "Scienza Analogica"
     }
   ];
 
@@ -150,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   revealElements.forEach((element) => revealObserver.observe(element));
 
-  if (rotatingQuoteCard && rotatingQuoteText && rotatingQuoteAuthor) {
+  if (rotatingQuoteCard && rotatingQuoteText) {
     let currentQuoteIndex = 0;
 
     window.setInterval(() => {
@@ -159,7 +259,9 @@ document.addEventListener("DOMContentLoaded", () => {
       window.setTimeout(() => {
         currentQuoteIndex = (currentQuoteIndex + 1) % rotatingQuotes.length;
         rotatingQuoteText.textContent = rotatingQuotes[currentQuoteIndex].text;
-        rotatingQuoteAuthor.textContent = rotatingQuotes[currentQuoteIndex].author;
+        if (rotatingQuoteAuthor) {
+          rotatingQuoteAuthor.textContent = rotatingQuotes[currentQuoteIndex].author;
+        }
         rotatingQuoteCard.classList.remove("is-switching");
       }, 420);
     }, 5200);
@@ -300,6 +402,16 @@ document.addEventListener("DOMContentLoaded", () => {
           "Richiesta inviata correttamente. Sarai ricontattato al più presto.";
         feedback.hidden = false;
         form.reset();
+
+        const parentModal = form.closest(".modal");
+        if (parentModal?.id === "booking-modal") {
+          closeModal(parentModal);
+        }
+        const thankyouModal = document.getElementById("thankyou-modal");
+        if (thankyouModal) {
+          openModal("thankyou-modal", submitButton || form);
+          activeModal = thankyouModal;
+        }
       } catch (error) {
         feedback.textContent =
           "Invio non riuscito. Verifica la configurazione email del server e riprova.";

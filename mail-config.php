@@ -5,23 +5,26 @@ header('Content-Type: application/json; charset=UTF-8');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    echo json_encode([
-        'ok' => false,
-        'error' => 'Metodo non consentito'
-    ]);
+    echo json_encode(['ok' => false, 'error' => 'Metodo non consentito']);
     exit;
 }
 
 /*
 |--------------------------------------------------------------------------
-| Configurazione email
+| Configurazione SMTP (Gmail)
 |--------------------------------------------------------------------------
-| Inserisci qui i dati reali del cliente.
-| Nota: mail() richiede un server con invio email configurato.
+| Compila solo la password app Gmail nel campo $smtpPassword.
+| Per Gmail usa una "Password per le app", non la password principale.
 */
-$recipientEmail = 'info@antoniotizianosergi.it'; // Destinatario richieste
-$fromEmail = 'no-reply@antoniotizianosergi.it';  // Mittente tecnico dominio
+$recipientEmail = 'seranti.analogista@gmail.com';
+$fromEmail = 'seranti.analogista@gmail.com';
 $fromName = 'Sito Antonio Tiziano Sergi';
+
+$smtpHost = 'smtp.gmail.com';
+$smtpPort = 587;
+$smtpSecure = 'tls'; // tls (587) oppure ssl (465)
+$smtpUsername = 'seranti.analogista@gmail.com';
+$smtpPassword = ''; // <- INSERISCI QUI LA PASSWORD APP DI GMAIL
 
 /*
 |--------------------------------------------------------------------------
@@ -37,34 +40,34 @@ $termini = isset($_POST['termini']) ? (string)$_POST['termini'] : '';
 
 if ($nome === '' || $email === '' || $messaggio === '') {
     http_response_code(422);
-    echo json_encode([
-        'ok' => false,
-        'error' => 'Compila tutti i campi obbligatori'
-    ]);
+    echo json_encode(['ok' => false, 'error' => 'Compila tutti i campi obbligatori']);
     exit;
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     http_response_code(422);
-    echo json_encode([
-        'ok' => false,
-        'error' => 'Email non valida'
-    ]);
+    echo json_encode(['ok' => false, 'error' => 'Email non valida']);
     exit;
 }
 
-if ($source === 'prenotazione' && $termini === '') {
+if ($termini === '') {
     http_response_code(422);
+    echo json_encode(['ok' => false, 'error' => 'È necessario accettare i termini']);
+    exit;
+}
+
+if ($smtpPassword === '') {
+    http_response_code(500);
     echo json_encode([
         'ok' => false,
-        'error' => 'È necessario accettare i termini'
+        'error' => 'Password SMTP non configurata in mail-config.php'
     ]);
     exit;
 }
 
 /*
 |--------------------------------------------------------------------------
-| Costruzione email
+| Corpo email
 |--------------------------------------------------------------------------
 */
 $safeNome = mb_substr($nome, 0, 120);
@@ -73,7 +76,7 @@ $safeMessaggio = mb_substr($messaggio, 0, 5000);
 $safeSource = $source === 'prenotazione' ? 'Prenotazione colloquio' : 'Contatti sito';
 
 $subject = '[Sito ATS] Nuova richiesta: ' . $safeSource;
-$bodyLines = [
+$body = implode("\n", [
     'Hai ricevuto una nuova richiesta dal sito.',
     '',
     'Tipologia: ' . $safeSource,
@@ -84,29 +87,61 @@ $bodyLines = [
     '',
     'Messaggio:',
     $safeMessaggio
+]);
+
+/*
+|--------------------------------------------------------------------------
+| Invio con PHPMailer
+|--------------------------------------------------------------------------
+*/
+$autoloadPaths = [
+    __DIR__ . '/vendor/autoload.php',
+    __DIR__ . '/phpmailer/vendor/autoload.php'
 ];
-$body = implode("\n", $bodyLines);
 
-$headers = [
-    'From: ' . $fromName . ' <' . $fromEmail . '>',
-    'Reply-To: ' . $safeNome . ' <' . $email . '>',
-    'MIME-Version: 1.0',
-    'Content-Type: text/plain; charset=UTF-8'
-];
+$autoloadFound = false;
+foreach ($autoloadPaths as $autoloadPath) {
+    if (file_exists($autoloadPath)) {
+        require_once $autoloadPath;
+        $autoloadFound = true;
+        break;
+    }
+}
 
-$sent = mail($recipientEmail, $subject, $body, implode("\r\n", $headers));
-
-if (!$sent) {
+if (!$autoloadFound || !class_exists(\PHPMailer\PHPMailer\PHPMailer::class)) {
     http_response_code(500);
     echo json_encode([
         'ok' => false,
-        'error' => 'Invio email fallito. Verifica configurazione server.'
+        'error' => 'PHPMailer non trovato. Installa la libreria prima di inviare email.'
     ]);
     exit;
 }
 
-echo json_encode([
-    'ok' => true,
-    'message' => 'Richiesta inviata con successo'
-]);
+try {
+    $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+    $mail->isSMTP();
+    $mail->Host = $smtpHost;
+    $mail->SMTPAuth = true;
+    $mail->Username = $smtpUsername;
+    $mail->Password = $smtpPassword;
+    $mail->SMTPSecure = $smtpSecure;
+    $mail->Port = $smtpPort;
+    $mail->CharSet = 'UTF-8';
 
+    $mail->setFrom($fromEmail, $fromName);
+    $mail->addAddress($recipientEmail);
+    $mail->addReplyTo($email, $safeNome);
+    $mail->Subject = $subject;
+    $mail->Body = $body;
+    $mail->isHTML(false);
+    $mail->send();
+
+    echo json_encode(['ok' => true, 'message' => 'Richiesta inviata con successo']);
+} catch (\Throwable $e) {
+    http_response_code(500);
+    echo json_encode([
+        'ok' => false,
+        'error' => 'Invio SMTP fallito. Verifica host/porta/username/password.',
+        'debug' => $e->getMessage()
+    ]);
+}
