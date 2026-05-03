@@ -367,6 +367,37 @@ textarea {
   z-index: -1;
 }
 
+.method-highlight-card {
+  margin-top: 18px;
+  width: 100%;
+  max-width: 100%;
+  padding: 32px 36px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(33, 78, 88, 0.22);
+  background:
+    radial-gradient(circle at top, rgba(130, 217, 222, 0.22), transparent 42%),
+    linear-gradient(180deg, rgba(28, 79, 90, 0.98), rgba(20, 63, 72, 0.99));
+  color: #f2fcff;
+  box-shadow: var(--shadow-soft);
+}
+
+.method-highlight-card p {
+  margin: 0;
+  color: #f2fcff !important;
+  font-size: 1.2rem;
+  line-height: 1.85;
+  max-width: none !important;
+  width: 100%;
+}
+
+#metodo .section-intro {
+  max-width: 100%;
+}
+
+#metodo .section-intro > p {
+  max-width: none;
+}
+
 .hero {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
@@ -705,7 +736,7 @@ p {
   font-family: "Montserrat Alternates", sans-serif;
   font-size: 1.25rem;
   line-height: 1.25;
-  margin-bottom: 10px;
+  margin: 0;
 }
 
 .portrait-caption small {
@@ -725,16 +756,16 @@ p {
   transform: translateY(8px);
 }
 
-.rotating-quote-text::before {
-  content: "“";
-  color: var(--accent);
-  margin-right: 4px;
+.quote-line {
+  display: block;
+  color: var(--secondary);
 }
 
-.rotating-quote-text::after {
-  content: "”";
-  color: var(--accent);
-  margin-left: 4px;
+.quote-source {
+  display: block;
+  margin-top: 8px;
+  color: var(--text);
+  font-size: 0.95em;
 }
 
 .rotating-quote-author {
@@ -818,6 +849,16 @@ p {
 .about-heading {
   max-width: 100%;
   margin-bottom: 36px;
+}
+
+.about-heading > .eyebrow {
+  margin: 0 0 18px;
+  font-size: 0.84rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--secondary);
 }
 
 .about-heading-content {
@@ -1255,6 +1296,36 @@ html[lang="ru"] .about-visual {
 .service-face-back h3,
 .service-face-back li {
   color: #f9f7f2;
+}
+
+.service-card-dark {
+  padding: 32px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(circle at top, rgba(60, 178, 185, 0.16), transparent 42%),
+    linear-gradient(180deg, rgba(33, 78, 88, 0.98), rgba(24, 61, 69, 0.98));
+  color: #f9f7f2;
+  box-shadow: var(--shadow-soft);
+}
+
+.service-card-dark .service-label,
+.service-card-dark h3,
+.service-card-dark p,
+.service-card-dark li {
+  color: #f9f7f2;
+}
+
+#servizi .section-intro {
+  max-width: 100%;
+}
+
+#servizi .section-intro h2 {
+  max-width: 26ch;
+}
+
+.service-card-dark.service-featured {
+  min-height: auto;
 }
 
 .service-points {
