@@ -422,13 +422,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (rotatingQuoteCard && rotatingQuoteText) {
     let currentQuoteIndex = 0;
+    const pageLang = (document.documentElement.lang || "").toLowerCase();
+    const quoteSuffix = pageLang.startsWith("ru")
+      ? "цит. Stefano Benemeglio"
+      : "cit. Stefano Benemeglio";
+    const formatQuote = (quoteText) =>
+      `<span class="quote-line">“${quoteText}”</span><span class="quote-source">${quoteSuffix}</span>`;
 
     window.setInterval(() => {
       rotatingQuoteCard.classList.add("is-switching");
 
       window.setTimeout(() => {
         currentQuoteIndex = (currentQuoteIndex + 1) % rotatingQuotes.length;
-        rotatingQuoteText.textContent = rotatingQuotes[currentQuoteIndex].text;
+        rotatingQuoteText.innerHTML = formatQuote(
+          rotatingQuotes[currentQuoteIndex].text
+        );
         if (rotatingQuoteAuthor) {
           rotatingQuoteAuthor.textContent = rotatingQuotes[currentQuoteIndex].author;
         }
